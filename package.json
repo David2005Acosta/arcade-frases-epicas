@@ -1,0 +1,21 @@
+{
+  "name": "jardin-de-los-recuerdos",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "El Jardín de los Recuerdos: un jardín digital donde cada recuerdo florece. SQLite en el navegador con sql.js.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "postinstall": "node scripts/copy-wasm.mjs"
+  },
+  "dependencies": {
+    "sql.js": "^1.13.0"
+  },
+  "devDependencies": {
+    "@types/sql.js": "^1.4.9",
+    "typescript": "~5.9.3",
+    "vite": "^7.1.7"
+  }
+}

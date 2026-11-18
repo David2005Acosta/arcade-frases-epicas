@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="fondo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#161033"/>
+      <stop offset="100%" stop-color="#05030f"/>
+    </linearGradient>
+    <linearGradient id="rosa" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ff7ab8"/>
+      <stop offset="100%" stop-color="#ff3d9a"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="13" fill="url(#fondo)"/>
+  <rect x="6" y="6" width="52" height="52" rx="9" fill="none" stroke="#b46bff" stroke-opacity="0.35"/>
+  <!-- burbuja de diálogo pixelada -->
+  <path d="M14 16h36v24H30l-8 9v-9h-8z" fill="#0b0719" stroke="#3ff0c8" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- comillas -->
+  <rect x="21" y="22" width="7" height="12" rx="1" fill="url(#rosa)"/>
+  <rect x="31" y="22" width="7" height="12" rx="1" fill="url(#rosa)"/>
+  <rect x="21" y="22" width="7" height="4" fill="#ffd0e6"/>
+  <rect x="31" y="22" width="7" height="4" fill="#ffd0e6"/>
+  <!-- píxeles decorativos -->
+  <rect x="48" y="12" width="4" height="4" fill="#ffc233"/>
+  <rect x="10" y="46" width="4" height="4" fill="#3ff0c8"/>
+</svg>
