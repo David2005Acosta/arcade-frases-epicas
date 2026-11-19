@@ -27,15 +27,8 @@ export function puntaje(votos: number): string {
 /** Cáscara estática: se pinta una sola vez al arrancar. */
 export function renderizarCascara(): string {
   return `
-    <div class="fondo-arcade" aria-hidden="true">
-      <div class="halo halo-uno"></div>
-      <div class="halo halo-dos"></div>
-      <div class="suelo"></div>
-      <div class="scanlines"></div>
-    </div>
-
-    <header class="marquesina">
-      <div class="marquesina-interior">
+    <header class="cabecera">
+      <div class="cabecera-interior">
         <a class="logo" href="#" aria-label="Arcade de Frases Épicas, inicio">
           <span class="logo-icono" aria-hidden="true">
             <span class="pixel p1"></span><span class="pixel p2"></span>
@@ -47,44 +40,27 @@ export function renderizarCascara(): string {
           </span>
         </a>
 
-        <div class="marquesina-datos">
+        <div class="cabecera-acciones">
           <span class="ficha" title="La base de datos SQLite vive en tu navegador">
-            <i></i> SQLITE ONLINE
+            <i></i> SQLITE ACTIVA
           </span>
-          <button type="button" class="btn btn-fantasma btn-mini" id="btn-reiniciar">RESET ARCADE</button>
+          <button type="button" class="btn btn-fantasma btn-mini" id="btn-reiniciar">REINICIAR</button>
         </div>
-      </div>
-      <div class="luces" aria-hidden="true">
-        ${Array.from({ length: 24 })
-          .map((_, i) => `<span style="--i:${i}"></span>`)
-          .join('')}
       </div>
     </header>
 
     <main class="contenedor">
       <section class="hero">
-        <p class="etiqueta-arcade">INSERT COIN · 1 JUGADOR · RANKING EN VIVO</p>
+        <p class="etiqueta-arcade">ARCADE · RANKING EN VIVO</p>
         <h1>Las frases más <em>épicas</em><br />de la historia</h1>
         <p class="entrada">
           Vota las líneas que te marcaron: videojuegos, cine y memes compiten en el mismo
-          ranking. Cada voto es un <code>UPDATE</code> en SQLite y mueve la tabla al instante.
+          ranking. Cada voto es un <code>UPDATE</code> en SQLite y la tabla se reordena al instante.
         </p>
         <dl class="marcador" id="marcador"></dl>
       </section>
 
       <div class="tablero">
-        <aside class="columna-ranking">
-          <section class="panel-ranking" aria-labelledby="titulo-top">
-            <header class="panel-cabecera">
-              <h2 id="titulo-top">TOP 10</h2>
-              <span class="en-vivo"><i></i> LIVE</span>
-            </header>
-            <p class="panel-sub">Las más votadas de la base de datos</p>
-            <ol class="ranking" id="ranking"></ol>
-            <p class="panel-pie">Se recalcula con <code>ORDER BY votos DESC</code> en cada voto.</p>
-          </section>
-        </aside>
-
         <section class="columna-juego" aria-labelledby="titulo-catalogo">
           <section class="panel-alta">
             <header class="alta-cabecera">
@@ -92,7 +68,6 @@ export function renderizarCascara(): string {
                 <p class="etiqueta-arcade" id="alta-etiqueta">NUEVA FRASE</p>
                 <h2 id="alta-titulo">Sube tu frase al arcade</h2>
               </div>
-              <span class="moneda" aria-hidden="true">◉</span>
             </header>
 
             <form class="formulario" id="form-frase" novalidate>
@@ -121,19 +96,17 @@ export function renderizarCascara(): string {
                 <div class="categorias" id="categorias">
                   ${CATEGORIAS.map(
                     (categoria) => `
-                    <label class="categoria-opcion" style="--tono:${CATEGORIA_META[categoria].color}">
+                    <label class="categoria-opcion">
                       <input type="radio" name="categoria" value="${categoria}" ${categoria === 'videojuego' ? 'checked' : ''} />
-                      <span class="categoria-pastilla">
-                        <b>${CATEGORIA_META[categoria].icono}</b>${CATEGORIA_META[categoria].etiqueta}
-                      </span>
+                      <span class="categoria-pastilla">${CATEGORIA_META[categoria].etiqueta}</span>
                     </label>`,
                   ).join('')}
                 </div>
               </fieldset>
 
               <div class="alta-acciones">
-                <button type="submit" class="btn btn-primario" id="btn-guardar">▶ INSERTAR FRASE</button>
-                <button type="button" class="btn btn-fantasma" id="btn-cancelar" hidden>✕ CANCELAR</button>
+                <button type="submit" class="btn btn-primario" id="btn-guardar">INSERTAR FRASE</button>
+                <button type="button" class="btn btn-fantasma" id="btn-cancelar" hidden>CANCELAR</button>
               </div>
             </form>
           </section>
@@ -169,6 +142,18 @@ export function renderizarCascara(): string {
             <div class="vacio"><h3>CARGANDO…</h3><p>Abriendo la base de datos SQLite.</p></div>
           </div>
         </section>
+
+        <aside class="columna-ranking">
+          <section class="panel-ranking" aria-labelledby="titulo-top">
+            <header class="panel-cabecera">
+              <h2 id="titulo-top">MEJORES 10</h2>
+              <span class="en-vivo"><i></i> EN VIVO</span>
+            </header>
+            <p class="panel-sub">Las más votadas de la base de datos</p>
+            <ol class="ranking" id="ranking"></ol>
+            <p class="panel-pie">Se recalcula en cada voto con <code>ORDER BY votos DESC</code>.</p>
+          </section>
+        </aside>
       </div>
     </main>
 
@@ -180,11 +165,11 @@ export function renderizarCascara(): string {
     <div class="modal" id="modal-eliminar" hidden>
       <div class="modal-fondo" data-cerrar-modal></div>
       <div class="modal-caja" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
-        <p class="game-over">GAME OVER</p>
+        <p class="modal-etiqueta">ELIMINAR FRASE</p>
         <h2 id="modal-titulo">¿Borrar esta frase?</h2>
         <p id="modal-texto">Se eliminará de la base de datos y perderá todos sus votos.</p>
         <div class="modal-acciones">
-          <button type="button" class="btn btn-fantasma" data-cerrar-modal>CONTINUAR</button>
+          <button type="button" class="btn btn-fantasma" data-cerrar-modal>CANCELAR</button>
           <button type="button" class="btn btn-peligro" id="btn-confirmar-eliminar">BORRAR</button>
         </div>
       </div>
@@ -199,7 +184,7 @@ export function renderizarMarcador(stats: Estadisticas): string {
   const datos: Array<[string, string]> = [
     [String(stats.total), 'FRASES EN JUEGO'],
     [String(stats.votos), 'VOTOS EMITIDOS'],
-    [lider ? lider.etiqueta.toUpperCase() : '—', 'CATEGORÍA LÍDER'],
+    [lider ? lider.etiqueta : '—', 'CATEGORÍA LÍDER'],
   ];
 
   return datos
@@ -223,7 +208,7 @@ export function renderizarRanking(entradas: EntradaRanking[]): string {
   return entradas
     .map((entrada) => {
       const meta = CATEGORIA_META[entrada.categoria];
-      const ancho = Math.max(6, Math.round((entrada.votos / maximo) * 100));
+      const ancho = Math.max(4, Math.round((entrada.votos / maximo) * 100));
       return `
         <li class="rank" style="--tono:${meta.color}">
           <span class="rank-puesto ${entrada.posicion <= 3 ? 'medalla' : ''}">${String(entrada.posicion).padStart(2, '0')}</span>
@@ -232,7 +217,7 @@ export function renderizarRanking(entradas: EntradaRanking[]): string {
             <p class="rank-meta">${escapar(entrada.autor)} · ${escapar(entrada.obra)}</p>
             <div class="barra"><i style="width:${ancho}%"></i></div>
           </div>
-          <span class="rank-votos">${puntaje(entrada.votos)}</span>
+          <span class="rank-votos">${entrada.votos}</span>
         </li>`;
     })
     .join('');
@@ -243,13 +228,11 @@ export function renderizarFiltros(
   activo: FiltroCategoria,
   total: number,
 ): string {
-  const opciones: Array<{ valor: FiltroCategoria; etiqueta: string; color: string; icono: string; total: number }> = [
-    { valor: 'todas', etiqueta: 'TODO', color: '#f4f7ff', icono: '★', total },
+  const opciones: Array<{ valor: FiltroCategoria; etiqueta: string; total: number }> = [
+    { valor: 'todas', etiqueta: 'TODAS', total },
     ...CATEGORIAS.map((categoria) => ({
       valor: categoria as FiltroCategoria,
       etiqueta: CATEGORIA_META[categoria].etiqueta.toUpperCase(),
-      color: CATEGORIA_META[categoria].color,
-      icono: CATEGORIA_META[categoria].icono,
       total: conteo[categoria],
     })),
   ];
@@ -258,9 +241,9 @@ export function renderizarFiltros(
     .map(
       (opcion) => `
       <button type="button" class="chip ${opcion.valor === activo ? 'activo' : ''}"
-              data-filtro="${opcion.valor}" style="--tono:${opcion.color}"
+              data-filtro="${opcion.valor}"
               aria-pressed="${opcion.valor === activo}">
-        <span class="chip-icono">${opcion.icono}</span>${opcion.etiqueta}
+        ${opcion.etiqueta}
         <b>${opcion.total}</b>
       </button>`,
     )
@@ -285,9 +268,9 @@ export function renderizarTarjeta(frase: Frase): string {
   return `
     <article class="frase-card" data-id="${frase.id}" style="--tono:${meta.color}; --tono-suave:${meta.colorSuave}">
       <div class="card-cabecera">
-        <span class="cat-badge">${meta.icono} ${meta.etiqueta.toUpperCase()}</span>
-        ${puesto <= 3 && puesto > 0 ? `<span class="medalla-mini">TOP ${puesto}</span>` : ''}
-        <span class="puntos"><b id="votos-${frase.id}">${puntaje(frase.votos)}</b><small>PTS</small></span>
+        <span class="cat-badge">${meta.etiqueta}</span>
+        ${puesto <= 3 && puesto > 0 ? `<span class="medalla-mini">N.º ${puesto}</span>` : ''}
+        <span class="puntos"><b id="votos-${frase.id}">${puntaje(frase.votos)}</b><small>PUNTOS</small></span>
       </div>
 
       <blockquote class="card-frase">“${escapar(frase.texto)}”</blockquote>

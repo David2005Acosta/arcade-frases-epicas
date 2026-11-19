@@ -260,7 +260,7 @@ export class ArcadeController {
 
     $('#alta-etiqueta').textContent = 'EDITANDO';
     $('#alta-titulo').textContent = 'Corrige la frase';
-    $('#btn-guardar').textContent = '▣ GUARDAR CAMBIOS';
+    $('#btn-guardar').textContent = 'GUARDAR CAMBIOS';
     ($("#btn-cancelar") as HTMLButtonElement).hidden = false;
     ($("#form-frase") as HTMLFormElement).classList.add('editando');
 
@@ -279,7 +279,7 @@ export class ArcadeController {
 
     $('#alta-etiqueta').textContent = 'NUEVA FRASE';
     $('#alta-titulo').textContent = 'Sube tu frase al arcade';
-    $('#btn-guardar').textContent = '▶ INSERTAR FRASE';
+    $('#btn-guardar').textContent = 'INSERTAR FRASE';
     ($("#btn-cancelar") as HTMLButtonElement).hidden = true;
     ($("#form-frase") as HTMLFormElement).classList.remove('editando');
 
